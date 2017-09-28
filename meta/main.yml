@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  author: Vineet Naik
+  author: Vineet Naik, Pau Ruiz Safont
   description: For installing a specific Python version from source
   license: MIT
   min_ansible_version: 1.2
