@@ -6,8 +6,8 @@
 
 - name: check if python version installed
   command: "command -v {{ pyfsrc_exec }}"
-  register: cmd_result
+  register: is_installed
   ignore_errors: yes
 
-- include: install.yml
-  when: pyfsrc_force_install or cmd_result.rc != 0
+- include_tasks: install.yml
+  when: pyfsrc_force_install or is_installed|failed
