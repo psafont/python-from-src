@@ -11,7 +11,7 @@
     copy: no
 
 - name: Run configure
-  command: ./configure
+  command: "./configure --prefix={{ pyfsrc_install_path }}"
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
 
@@ -33,6 +33,7 @@
     chdir: "{{ pyfsrc_src_dir_path }}"
   when: not pyfsrc_make_default
   become: yes
+  become_user: "{{ pyfsrc_user }}"
 
 - name: Clean up the source files
   command: rm -r "{{ item }}"
