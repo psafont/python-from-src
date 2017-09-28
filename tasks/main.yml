@@ -5,7 +5,7 @@
     pyfsrc_exec: "python{{ pyfsrc_version|regex_replace('(\\d+\\.\\d+)\\..*$', '\\\\1') }}"
 
 - name: check if python version installed
-  command: "which {{ pyfsrc_exec }}"
+  command: "command -v {{ pyfsrc_exec }}"
   register: cmd_result
   ignore_errors: yes
 
