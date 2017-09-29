@@ -14,6 +14,19 @@
   become: yes
   become_user: "{{ pyfsrc_user }}"
 
+- name: "Add path to user's environment"
+  lineinfile:
+    create: yes
+    state: present
+    line: "{{ item }}"
+    path: "\"$HOME\"/.profile"
+  with_items:
+    - "PATH=\"$PATH:{{ pyfsrc_install_path }}/bin\""
+    - "export PATH"
+  when: not pyfsrc_make_default
+  become: yes
+  become_user: "{{ pyfsrc_user }}"
+
 - name: Clean up build folder and archive
   file:
     path: "{{ item }}"
