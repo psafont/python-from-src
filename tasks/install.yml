@@ -1,36 +1,40 @@
 ---
 
-- include: "setup-{{ ansible_os_family }}.yml"
-  static: no
+- include_tasks: "setup-{{ ansible_os_family }}.yml"
 
-- name: Download the tar ball
+- name: Download source
   get_url: url="{{ pyfsrc_download_url }}" dest="{{ pyfsrc_src_pkg_path }}"
 
-- name: Untar the source package
+- name: Unarchive source
   unarchive:
     src: "{{ pyfsrc_src_pkg_path }}"
     dest: "{{ pyfsrc_download_dir }}"
     creates: "{{ pyfsrc_src_dir_path }}"
     copy: no
 
-- name: Run configure
+- name: Configure package
   command: "./configure --prefix={{ pyfsrc_install_path }}"
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
 
-- name: Run make
+- name: Cleanup for build
+  command: make clean
+  args:
+    chdir: "{{ pyfsrc_src_dir_path }}"
+
+- name: Compile source
   command: make
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
 
-- name: Run make install
+- name: Install as default interpreter
   command: make install
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
   when: pyfsrc_make_default
   become: yes
 
-- name: Run make altinstall
+- name: Install as alternative interpreter
   command: make altinstall
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
@@ -38,8 +42,10 @@
   become: yes
   become_user: "{{ pyfsrc_user }}"
 
-- name: Clean up the source files
-  command: rm -r "{{ item }}"
+- name: Clean up build folder and archive
+  file:
+    path: "{{ item }}"
+    state: absent
   with_items:
     - "{{ pyfsrc_src_pkg_path }}"
     - "{{ pyfsrc_src_dir_path }}"
