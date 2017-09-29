@@ -1,5 +1,8 @@
 ---
 
+- include: "setup-{{ ansible_os_family }}.yml"
+  static: no
+
 - name: Download the tar ball
   get_url: url="{{ pyfsrc_download_url }}" dest="{{ pyfsrc_src_pkg_path }}"
 
