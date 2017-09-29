@@ -14,15 +14,23 @@
   become: yes
   become_user: "{{ pyfsrc_user }}"
 
-- name: "Add path to user's environment"
+- name: "Create profile exporting PATH"
   lineinfile:
     create: yes
+    line: "export PATH"
+    path: "$HOME/.bash_profile"
+    insertafter: EOF
     state: present
-    line: "{{ item }}"
-    path: "\"$HOME\"/.profile"
-  with_items:
-    - "PATH=\"$PATH:{{ pyfsrc_install_path }}/bin\""
-    - "export PATH"
+  when: not pyfsrc_make_default
+  become: yes
+  become_user: "{{ pyfsrc_user }}"
+
+- name: "Add path to user's environment"
+  lineinfile:
+    state: present
+    line: "PATH=$PATH:{{ pyfsrc_install_path }}/bin"
+    path: "$HOME/.bash_profile"
+    insertbefore: "export PATH"
   when: not pyfsrc_make_default
   become: yes
   become_user: "{{ pyfsrc_user }}"
