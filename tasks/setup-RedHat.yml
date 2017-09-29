@@ -4,3 +4,4 @@
     name: "{{ item }}"
     state: installed
   with_items: zlib-devel
+  become: yes
