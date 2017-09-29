@@ -3,6 +3,8 @@
 
 - name: Download source
   get_url: url="{{ pyfsrc_download_url }}" dest="{{ pyfsrc_src_pkg_path }}"
+  become: yes
+  become_user: "{{ pyfsrc_user }}"
 
 - name: Unarchive source
   unarchive:
@@ -10,13 +12,19 @@
     dest: "{{ pyfsrc_download_dir }}"
     creates: "{{ pyfsrc_src_dir_path }}"
     copy: no
+  become: yes
+  become_user: "{{ pyfsrc_user }}"
 
 - name: Configure package
   command: "./configure --prefix={{ pyfsrc_install_path }}"
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
+  become: yes
+  become_user: "{{ pyfsrc_user }}"
 
 - name: Cleanup for build
   command: make clean
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
+  become: yes
+  become_user: "{{ pyfsrc_user }}"

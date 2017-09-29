@@ -19,6 +19,8 @@
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
   when: pyfsrc_force_install or is_installed|failed
+  become: yes
+  become_user: "{{ pyfsrc_user }}"
 
 - name: Install python
   include_tasks: install.yml
