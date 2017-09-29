@@ -2,14 +2,15 @@
 # tasks file for python-from-src
 
 - set_fact:
-    pyfsrc_exec: "python{{ pyfsrc_version|regex_replace('(\\d\\.\\d)\\..*$', '\\1') }}"
+    pyfsrc_exec: "python{{ pyfsrc_version|regex_replace('(\\d\\.\\d+)\\..*$', '\\1') }}"
 
-- name: check if python version installed
-  command: "which {{ pyfsrc_exec }}"
+- name: Determine if this Python version already installed
+  shell: "[ $({{ pyfsrc_exec }} -V 2>&1 | sed 's/Python //g') = {{ pyfsrc_version }} ]"
   register: is_installed
   ignore_errors: yes
 
-- include_tasks: setup.yml
+- name: Setup compilation
+  include_tasks: setup.yml
   when: pyfsrc_force_install or is_installed|failed
 
 - name: Compile source
@@ -18,5 +19,6 @@
     chdir: "{{ pyfsrc_src_dir_path }}"
   when: pyfsrc_force_install or is_installed|failed
 
-- include_tasks: install.yml
+- name: Install python
+  include_tasks: install.yml
   when: pyfsrc_force_install or is_installed|failed
