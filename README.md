@@ -19,6 +19,7 @@ The only role vars that the user needs to worry about are:
   default version on the system.
 - `pyfsrc_force_install`: Install again even if the specified version
   is already found.
+- `pyfsrc_install_path`: Folder where Python will be installed.
 
 Dependencies
 ------------
@@ -33,13 +34,12 @@ eg:
 ```
     - name: Install python
       hosts: localhost
-      sudo: yes
       roles:
         - role: python-from-source
-          pyfsrc_version: 3.4.3
+          pyfsrc_version: 3.6.2
 ```
 
-The above playbook will install python version 3.4.3.
+The above playbook will install python version 3.6.2 under the default user's `$HOME/.local`.
 
 The role can be used multiple times with different value of
 `pyfsrc_version` to install different versions. This can be useful for
@@ -55,3 +55,5 @@ Author Information
 ------------------
 
 Vineet Naik <naikvin@gmail.com>
+
+EMBL-EBI
