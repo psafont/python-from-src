@@ -1,0 +1,13 @@
+---
+- name: Setup source for compilation
+  include_tasks: setup.yml
+
+- name: Compile
+  command: make
+  args:
+    chdir: "{{ pyfsrc_src_dir_path }}"
+  become: yes
+  become_user: "{{ pyfsrc_user }}"
+
+- name: Install to {{ pyfsrc_install_path }}
+  include_tasks: install.yml
