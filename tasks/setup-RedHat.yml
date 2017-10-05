@@ -6,4 +6,5 @@
   with_items:
       - zlib-devel
       - gcc
+      - openssl-devel
   become: yes
