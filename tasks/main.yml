@@ -3,7 +3,8 @@
 
 - name: "Determine Python executable's name"
   set_fact:
-    pyfsrc_exec: "python{{ pyfsrc_version|regex_replace('(\\d\\.\\d+)\\..*$', '\\1') }}"
+    pyfsrc_short_version: "{{ pyfsrc_version|regex_replace('(\\d\\.\\d+)\\..*$', '\\1') }}"
+    pyfsrc_exec: "python{{ pyfsrc_short_version }}"
 
 - name: Determine if {{ pyfsrc_exec }} is up-to-date
   shell: >
@@ -15,3 +16,6 @@
 - name: Installing requested Python version
   include_tasks: new_version.yml
   when: pyfsrc_force_install or is_installed|failed
+
+- name: install python basic tools
+  command: pip{{ pyfsrc_short_version }} install virtualenv wheel
