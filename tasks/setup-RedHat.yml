@@ -7,4 +7,5 @@
       - zlib-devel
       - gcc
       - openssl-devel
+      - bzip2-devel
   become: yes
