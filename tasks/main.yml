@@ -17,4 +17,7 @@
   when: pyfsrc_force_install or is_installed|failed
 
 - name: install python basic tools
-  command: "{{ pyfsrc_exec }} -m pip install virtualenv wheel"
+  shell: >
+    source "$HOME/.bash_profile" && "{{ pyfsrc_exec }} -m pip install virtualenv wheel"
+  register: package_install
+  changed_when: "package_install.stdout|search('Successfully installed')"
