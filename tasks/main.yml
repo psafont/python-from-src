@@ -7,7 +7,7 @@
 
 - name: Determine if {{ pyfsrc_exec }} is up-to-date
   shell: >
-    source "$HOME/.bash_profile" && [ "$({{ pyfsrc_exec|quote }} -V 2>&1 | sed 's/Python //g')" == {{ pyfsrc_version|quote }} ]
+    [ "$({{ pyfsrc_install_path|quote }}/bin/{{ pyfsrc_exec|quote }} -V 2>&1 | sed 's/Python //g')" == {{ pyfsrc_version|quote }} ]
   register: is_installed
   ignore_errors: yes
   changed_when: no
@@ -17,7 +17,9 @@
   when: pyfsrc_force_install or is_installed|failed
 
 - name: install python basic tools
-  shell: >
-    source "$HOME/.bash_profile" && "{{ pyfsrc_exec }} -m pip install virtualenv wheel"
+  command: "{{ pyfsrc_install_path|quote }}/bin/{{ pyfsrc_exec|quote }} -m pip install {{ item }}"
+  with_items:
+    - "virtualenv"
+    - "wheel"
   register: package_install
   changed_when: "package_install.stdout|search('Successfully installed')"
