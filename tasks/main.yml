@@ -5,9 +5,13 @@
   set_fact:
     pyfsrc_exec:    "python{{ pyfsrc_version|regex_replace('(\\d\\.\\d+)\\..*$', '\\1') }}"
 
+- name: "Determine Python's executable location"
+  set_fact:
+    pyfsrc_execpath: "{{ pyfsrc_install_path|quote }}/bin/{{ pyfsrc_exec|quote }}"
+
 - name: Determine if {{ pyfsrc_exec }} is up-to-date
   shell: >
-    [ "$({{ pyfsrc_install_path|quote }}/bin/{{ pyfsrc_exec|quote }} -V 2>&1 | sed 's/Python //g')" == {{ pyfsrc_version|quote }} ]
+    [ "$({{ pyfsrc_execpath }} -V 2>&1 | sed 's/Python //g')" == {{ pyfsrc_version|quote }} ]
   register: is_installed
   ignore_errors: yes
   changed_when: no
@@ -16,8 +20,13 @@
   include_tasks: new_version.yml
   when: pyfsrc_force_install or is_installed|failed
 
+- name: Ensure pip can be used
+  command: "{{ pyfsrc_execpath }} -m ensurepip"
+  register: pip_install
+  changed_when: "pip_install.stdout|search('Successfully installed')"
+
 - name: install python basic tools
-  command: "{{ pyfsrc_install_path|quote }}/bin/{{ pyfsrc_exec|quote }} -m pip install {{ item }}"
+  command: "{{ pyfsrc_execpath }} -m pip install {{ item }}"
   with_items:
     - "virtualenv"
     - "wheel"
