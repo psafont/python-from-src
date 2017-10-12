@@ -36,12 +36,26 @@ Example Playbook
 eg:
 
 ```
-    - name: Install python
-      hosts: localhost
-      roles:
-        - role: python-from-source
-          pyfsrc_version: 3.6.2
-          ansible_ssh_user: unprivileged_user
+- hosts:
+  localhost:
+    pre_tasks:
+      - name: install python requirements
+        yum:
+          name: "{{ item }}"
+          state: installed
+        with_items:
+          - zlib-devel
+          - gcc
+          - openssl-devel
+          - bzip2-devel
+          - git
+        become: yes
+        when: ansible_os_family == "RedHat"
+
+    roles:
+      - role: python-from-source
+        pyfsrc_version: 3.6.2
+        ansible_ssh_user: unprivileged_user
 ```
 
 The above playbook will install python version 3.6.2 under unprivileged_user's `$HOME/.local`.
