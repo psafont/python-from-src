@@ -1,18 +1,8 @@
 ---
-- name: Install as default interpreter
-  command: make install
-  args:
-    chdir: "{{ pyfsrc_src_dir_path }}"
-  when: pyfsrc_make_default
-  become: yes
-
 - name: Install as alternative interpreter
   command: make altinstall
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
-  when: not pyfsrc_make_default
-  become: yes
-  become_user: "{{ pyfsrc_user }}"
 
 - name: "Create profile exporting PATH"
   lineinfile:
@@ -21,9 +11,6 @@
     path: "$HOME/.bash_profile"
     insertafter: EOF
     state: present
-  when: not pyfsrc_make_default
-  become: yes
-  become_user: "{{ pyfsrc_user }}"
 
 - name: "Add path to user's environment"
   lineinfile:
@@ -31,9 +18,6 @@
     line: "PATH=$PATH:{{ pyfsrc_install_path }}/bin"
     path: "$HOME/.bash_profile"
     insertbefore: "export PATH"
-  when: not pyfsrc_make_default
-  become: yes
-  become_user: "{{ pyfsrc_user }}"
 
 - name: Clean up build folder and archive
   file:

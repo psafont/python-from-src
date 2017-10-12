@@ -13,12 +13,9 @@ pyfsrc_src_dir_path: "{{ pyfsrc_download_dir }}/{{ pyfsrc_download_pkg_name }}"
 pyfsrc_src_pkg_path: "{{ pyfsrc_src_dir_path }}.tgz"
 
 # install as user
-pyfsrc_user: "{{ ansible_user }}"
+pyfsrc_user: "{{ ansible_ssh_user }}"
 
-pyfsrc_install_path: "/home/{{ ansible_user }}/.local"
-
-# whether or not to make this version of python the default.
-pyfsrc_make_default: no
+pyfsrc_install_path: "/home/{{ ansible_ssh_user }}/.local"
 
 # whether or not to delete the downloaded source code. By setting it
 # to false and using a custom var for `pyfsrc_download_dir` a kind of

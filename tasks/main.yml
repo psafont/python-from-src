@@ -25,7 +25,7 @@
   register: pip_install
   changed_when: "pip_install.stdout|search('Successfully installed')"
 
-- name: install python basic tools
+- name: install Python basic tools
   command: "{{ pyfsrc_execpath }} -m pip install {{ item }}"
   with_items:
     - "virtualenv"
