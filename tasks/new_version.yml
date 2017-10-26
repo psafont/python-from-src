@@ -8,6 +8,6 @@
 - name: Install static python binary
   include_tasks: static.yml
 
-  - name: Post-install tweaks
+- name: Post-install tweaks
   include_tasks: postinstall.yml
 

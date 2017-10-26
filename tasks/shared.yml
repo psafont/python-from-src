@@ -14,9 +14,7 @@
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
 
-
-- name: Install to {{ pyfsrc_install_path }}
-- name: Install shared libraries
+- name: Install shared libraries to {{ pyfsrc_install_path }}
   command: make install
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
