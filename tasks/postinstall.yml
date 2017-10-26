@@ -1,9 +1,4 @@
 ---
-- name: Install as alternative interpreter
-  command: make altinstall
-  args:
-    chdir: "{{ pyfsrc_src_dir_path }}"
-
 - name: "Create profile exporting PATH"
   lineinfile:
     create: yes

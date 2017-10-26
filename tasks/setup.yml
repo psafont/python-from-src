@@ -10,12 +10,3 @@
     dest: "{{ pyfsrc_download_dir }}"
     creates: "{{ pyfsrc_src_dir_path }}"
 
-- name: Configure package
-  command: "./configure --prefix={{ pyfsrc_install_path }}"
-  args:
-    chdir: "{{ pyfsrc_src_dir_path }}"
-
-- name: Cleanup for build
-  command: make clean
-  args:
-    chdir: "{{ pyfsrc_src_dir_path }}"

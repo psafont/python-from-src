@@ -2,10 +2,12 @@
 - name: Setup source for compilation
   include_tasks: setup.yml
 
-- name: Compile
-  command: make
-  args:
-    chdir: "{{ pyfsrc_src_dir_path }}"
+- name: Install python with shared libraries
+  include_tasks: shared.yml
 
-- name: Install to {{ pyfsrc_install_path }}
-  include_tasks: install.yml
+- name: Install static python binary
+  include_tasks: static.yml
+
+  - name: Post-install tweaks
+  include_tasks: postinstall.yml
+
