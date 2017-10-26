@@ -1,6 +1,6 @@
 ---
 - name: Configure
-  command: "./configure --enable-shared --prefix={{ pyfsrc_install_path }}"
+  command: "./configure --enable-shared --enable-unicode=ucs4 --prefix={{ pyfsrc_install_path }}"
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
 
