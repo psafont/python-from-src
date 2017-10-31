@@ -4,9 +4,9 @@
     url: "{{ pyfsrc_download_url }}"
     dest: "{{ pyfsrc_src_pkg_path }}"
 
-- name: Unarchive source
+- name: Extract source
   unarchive:
     src: "{{ pyfsrc_src_pkg_path }}"
     dest: "{{ pyfsrc_download_dir }}"
-    creates: "{{ pyfsrc_src_dir_path }}"
+    remote_src: yes
 
