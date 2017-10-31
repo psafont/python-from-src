@@ -1,6 +1,6 @@
 ---
 - name: Configure
-  command: "./configure --enable-unicode=ucs4 --prefix={{ pyfsrc_install_path }}"
+  command: "./configure --prefix={{ pyfsrc_install_path }}"
   args:
     chdir: "{{ pyfsrc_src_dir_path }}"
 
